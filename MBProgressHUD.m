@@ -422,6 +422,7 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		[indicator removeFromSuperview];
 		self.indicator = customView;
 		[self addSubview:indicator];
+        [self sendSubviewToBack:indicator];
 	} else if (mode == MBProgressHUDModeText) {
 		[indicator removeFromSuperview];
 		self.indicator = nil;
@@ -470,7 +471,9 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 	indicatorF.origin.y = yPos;
 	indicatorF.origin.x = roundf((bounds.size.width - indicatorF.size.width) / 2) + xPos;
 	indicator.frame = indicatorF;
-	yPos += indicatorF.size.height;
+    
+    //让label盖在customView 上面
+    yPos += (indicatorF.size.height - labelSize.height) /2;
 	
 	if (labelSize.height > 0.f && indicatorF.size.height > 0.f) {
 		yPos += kPadding;
@@ -536,21 +539,21 @@ static const CGFloat kDetailsLabelFontSize = 12.f;
 		CGGradientRelease(gradient);
 	}
 	
-	// Center HUD
-	CGRect allRect = self.bounds;
-	// Draw rounded HUD bacgroud rect
-	CGRect boxRect = CGRectMake(roundf((allRect.size.width - size.width) / 2) + self.xOffset,
-								roundf((allRect.size.height - size.height) / 2) + self.yOffset, size.width, size.height);
-	float radius = 10.0f;
-	CGContextBeginPath(context);
-	CGContextSetGrayFillColor(context, 0.0f, self.opacity);
-	CGContextMoveToPoint(context, CGRectGetMinX(boxRect) + radius, CGRectGetMinY(boxRect));
-	CGContextAddArc(context, CGRectGetMaxX(boxRect) - radius, CGRectGetMinY(boxRect) + radius, radius, 3 * (float)M_PI / 2, 0, 0);
-	CGContextAddArc(context, CGRectGetMaxX(boxRect) - radius, CGRectGetMaxY(boxRect) - radius, radius, 0, (float)M_PI / 2, 0);
-	CGContextAddArc(context, CGRectGetMinX(boxRect) + radius, CGRectGetMaxY(boxRect) - radius, radius, (float)M_PI / 2, (float)M_PI, 0);
-	CGContextAddArc(context, CGRectGetMinX(boxRect) + radius, CGRectGetMinY(boxRect) + radius, radius, (float)M_PI, 3 * (float)M_PI / 2, 0);
-	CGContextClosePath(context);
-	CGContextFillPath(context);
+//	// Center HUD
+//	CGRect allRect = self.bounds;
+//	// Draw rounded HUD bacgroud rect
+//	CGRect boxRect = CGRectMake(roundf((allRect.size.width - size.width) / 2) + self.xOffset,
+//								roundf((allRect.size.height - size.height) / 2) + self.yOffset, size.width, size.height);
+//	float radius = 10.0f;
+//	CGContextBeginPath(context);
+//	CGContextSetGrayFillColor(context, 0.0f, self.opacity);
+//	CGContextMoveToPoint(context, CGRectGetMinX(boxRect) + radius, CGRectGetMinY(boxRect));
+//	CGContextAddArc(context, CGRectGetMaxX(boxRect) - radius, CGRectGetMinY(boxRect) + radius, radius, 3 * (float)M_PI / 2, 0, 0);
+//	CGContextAddArc(context, CGRectGetMaxX(boxRect) - radius, CGRectGetMaxY(boxRect) - radius, radius, 0, (float)M_PI / 2, 0);
+//	CGContextAddArc(context, CGRectGetMinX(boxRect) + radius, CGRectGetMaxY(boxRect) - radius, radius, (float)M_PI / 2, (float)M_PI, 0);
+//	CGContextAddArc(context, CGRectGetMinX(boxRect) + radius, CGRectGetMinY(boxRect) + radius, radius, (float)M_PI, 3 * (float)M_PI / 2, 0);
+//	CGContextClosePath(context);
+//	CGContextFillPath(context);
 }
 
 #pragma mark - KVO

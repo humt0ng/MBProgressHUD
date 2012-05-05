@@ -39,6 +39,7 @@
 #pragma mark IBActions
 
 - (IBAction)showSimple:(id)sender {
+#if 0
 	// The hud will dispable all input on the view (use the higest view possible in the view hierarchy)
 	HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
 	[self.navigationController.view addSubview:HUD];
@@ -48,6 +49,19 @@
 	
 	// Show the HUD while the provided method executes in a new thread
 	[HUD showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
+#else
+
+	HUD = [[MBProgressHUD alloc] initWithView:self.navigationController.view];
+	[self.navigationController.view addSubview:HUD];
+	
+	HUD.delegate = self;
+	HUD.mode = MBProgressHUDModeCustomView;
+	HUD.labelText = @"发送成功";
+	HUD.labelFont = [UIFont systemFontOfSize:15];
+	HUD.customView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"bg_newShareSuccess.png"]];
+
+	[HUD showWhileExecuting:@selector(myTask) onTarget:self withObject:nil animated:YES];
+#endif
 }
 
 - (IBAction)showWithLabel:(id)sender {
